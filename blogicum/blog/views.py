@@ -47,19 +47,20 @@ posts = [
 
 def index(request):
     template_name = 'blog/index.html'
-    context = {'posts':posts}
+    context = {'posts': posts}
     return render(request, template_name, context)
+
 
 def post_detail(request, id):
     template_name = 'blog/detail.html'
     try:
-        context = {'post':posts[id]}
+        context = {'post': posts[id]}
         return render(request, template_name, context)
-    except:
+    except Http404:
         raise Http404('')
-    
+
 
 def category_posts(request, category_slug):
     template_name = 'blog/category.html'
-    context = {'category_slug':category_slug}
+    context = {'category_slug': category_slug}
     return render(request, template_name, context)

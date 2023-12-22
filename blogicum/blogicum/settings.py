@@ -32,7 +32,7 @@ TEMPLATES_DIR = BASE_DIR / 'templates'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static_dev',
-] 
+]
 
 INSTALLED_APPS = [
     'blog.apps.BlogConfig',
