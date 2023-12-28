@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import Http404
 
 posts = [
     {
@@ -47,7 +46,7 @@ posts = [
 
 def index(request):
     template_name = 'blog/index.html'
-    return render(request, template_name, { 'posts': reversed(posts) })
+    return render(request, template_name, {'posts': reversed(posts)})
 
 
 def post_detail(request, id):
