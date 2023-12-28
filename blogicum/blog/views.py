@@ -47,20 +47,17 @@ posts = [
 
 def index(request):
     template_name = 'blog/index.html'
-    context = {'posts': posts}
-    return render(request, template_name, context)
+    return render(request, template_name, { 'posts': reversed(posts) })
 
 
 def post_detail(request, id):
     template_name = 'blog/detail.html'
     try:
-        context = {'post': posts[id]}
-        return render(request, template_name, context)
-    except Http404:
-        raise Http404('')
+        return render(request, template_name, {'post': posts[id]})
+    except IndexError:
+        raise IndexError
 
 
 def category_posts(request, category_slug):
     template_name = 'blog/category.html'
-    context = {'category_slug': category_slug}
-    return render(request, template_name, context)
+    return render(request, template_name, {'category_slug': category_slug})
