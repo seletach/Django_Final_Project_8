@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 
 posts = [
     {
@@ -53,8 +54,8 @@ def post_detail(request, id):
     template_name = 'blog/detail.html'
     try:
         return render(request, template_name, {'post': posts[id]})
-    except IndexError:
-        raise IndexError
+    except Http404:
+        raise Http404
 
 
 def category_posts(request, category_slug):
