@@ -54,7 +54,7 @@ def post_detail(request, id):
     template_name = 'blog/detail.html'
     try:
         return render(request, template_name, {'post': posts[id]})
-    except Http404:
+    except IndexError:
         raise Http404
 
 
