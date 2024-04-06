@@ -23,7 +23,7 @@ def post_detail(request, id):
         Post,
         id=id)
     if (post.pub_date > timezone.now() or not post.is_published
-        or not post.category.is_published):
+            or not post.category.is_published):
         raise Http404
     context = {
         'post': post,
@@ -36,7 +36,7 @@ def category_posts(request, category_slug):
     category = get_object_or_404(Category,
                                  slug=category_slug,
                                  is_published=True)
-    posts = Post.objects.filter(category=category, 
+    posts = Post.objects.filter(category=category,
                                 is_published=True,
                                 pub_date__lte=timezone.now())
     context = {
