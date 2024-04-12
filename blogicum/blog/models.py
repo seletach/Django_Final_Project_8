@@ -2,21 +2,24 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-# необходимо сделать наследование от абстрактной модели строки created_at и is_published
+
 
 class BaseModel(models.Model):
     is_published = models.BooleanField(
         default=True,
         verbose_name='Опубликовано',
         help_text='Снимите галочку, чтобы скрыть публикацию.')
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      verbose_name='Добавлено')
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено')
 
     class Meta:
         abstract = True
 
+
 class Category(BaseModel):
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
+    title = models.CharField(max_length=256,
+                             verbose_name='Заголовок')
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
         unique=True,
@@ -53,6 +56,7 @@ class Post(BaseModel):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='Posts',
         verbose_name='Автор публикации'
     )
     location = models.ForeignKey(
@@ -60,19 +64,21 @@ class Post(BaseModel):
         blank=True,
         on_delete=models.SET_NULL,
         null=True,
+        related_name='location',
         verbose_name='Местоположение'
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
+        related_name='category',
         verbose_name='Категория'
     )
 
     class Meta:
+        ordering = ['-pub_date']
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
 
     def __str__(self):
         return self.title
-
