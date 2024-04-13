@@ -2,22 +2,16 @@ from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category
 from django.utils import timezone
 from django.http import Http404
-# .order_by('-pub_date') 13 строка
 
-#def filter_posts():
-#    Post.objects.filter(
-#        is_published=True,
-#        category__is_published=True,
-#        pub_date__lte=timezone.now())
+
+sort = Post.objects.filter(is_published=True,
+                           category__is_published=True,
+                           pub_date__lte=timezone.now())
 
 
 def index(request):
     const_number_of_posts = 5
-    post_list = Post.objects.filter(
-        is_published=True,
-        category__is_published=True,
-        pub_date__lte=timezone.now()
-    )[:const_number_of_posts]
+    post_list = sort[:const_number_of_posts]
     context = {
         'post_list': post_list,
     }
@@ -26,7 +20,7 @@ def index(request):
 
 def post_detail(request, id):
     post = get_object_or_404(
-        Post,
+        sort,
         id=id)
     if (post.pub_date > timezone.now() or not post.is_published
             or not post.category.is_published):
