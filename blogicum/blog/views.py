@@ -4,14 +4,12 @@ from django.utils import timezone
 from django.http import Http404
 
 
-sort = Post.objects.filter(is_published=True,
-                           category__is_published=True,
-                           pub_date__lte=timezone.now())
-
-
 def index(request):
-    const_number_of_posts = 5
-    post_list = sort[:const_number_of_posts]
+    CONST_NUMBER_OF_POSTS: int = 5
+    post_list = Post.objects.filter(is_published=True,
+                                    category__is_published=True,
+                                    pub_date__lte=timezone.now()
+                                    )[:CONST_NUMBER_OF_POSTS]
     context = {
         'post_list': post_list,
     }
@@ -19,9 +17,11 @@ def index(request):
 
 
 def post_detail(request, id):
-    post = get_object_or_404(
-        sort,
-        id=id)
+    post = get_object_or_404(Post,
+                             is_published=True,
+                             category__is_published=True,
+                             pub_date__lte=timezone.now(),
+                             id=id)
     if (post.pub_date > timezone.now() or not post.is_published
             or not post.category.is_published):
         raise Http404
